@@ -5,7 +5,9 @@ p1 = Popen(['java', '-jar', 'clausie.jar', '-c', 'resources/clausie.conf', '-v',
 
 sentence1 = b'This is a sentence\n'
 sentence2 = b'She was not going to parse another sentence\n'
-sents = [sentence1, sentence2]
+sentence3 = b'The man goes from point A to point B\n'
+sentence4 = b'He breathes without his lungs.\n'
+sents = [sentence1, sentence2, sentence3,sentence4]
 
 for sent in sents:
 	p1.stdin.write(sent)
@@ -28,10 +30,15 @@ clause_types = []
 verb_lemmas = []
 with open('testing.txt','r') as fp:
 	last_line = None
+	last_id = 0
 	for line in fp:
 		if line[0] == '#':
 			last_line = line
+			# print(line)
+		elif line.split()[0] == last_id:
+			continue
 		else:
+			last_id = line.split()[0]
 			# This is an output, last line has clause type
 			sep_line = last_line.split()
 			clause_type = sep_line[2]

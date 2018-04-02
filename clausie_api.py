@@ -4,6 +4,9 @@ from clockdeco import clock
 import nltk.data
 from nltk.corpus import wordnet as wn
 
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 CLAUSIE_FRAME_DICT = {
 	'SVC': [4,6,7],
 	'SV' : [1,3],
@@ -62,8 +65,8 @@ def setup_clausie():
 	# These parameter choices are informed by API assumptions
 	clausie_port = Popen(
 		['java', '-jar',
-		 'D:/Documents/Python/ClausIEpy/clausie.jar', '-c',
-		 'D:/Documents/Python/ClausIEpy/resources/clausie.conf',
+		 dir_path + '/clausie.jar', '-c',
+		 dir_path + '/resources/clausie.conf',
 		 '-v', '-s', '-p', '-o', 'clausie_output.txt'],
 		stdin=PIPE)
 	return clausie_port
@@ -115,7 +118,7 @@ def read_clausie_output(text_file_name):
 
 def prepare_raw_text(raw_text):
 	_sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
-	sents = _sent_detector.tokenize(raw_text)
+	sents = _sent_detector.tokenize(str(raw_text))
 	return [bytes(s + '\n', encoding='utf-8') for s in sents]
 
 
